@@ -134,6 +134,7 @@ public class WarehouseManager {
   public void importFile(String textfile) throws ImportFileException {
     try {
       _warehouse.importFile(textfile);
+    } catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
       throw new ImportFileException(textfile, e);
     }
   }
