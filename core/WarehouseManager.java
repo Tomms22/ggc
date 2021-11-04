@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
 import java.io.FileOutputStream;
 
@@ -92,7 +94,12 @@ public class WarehouseManager {
       prods.addAll(_warehouse.getProducts());
       obOut.writeObject(parts);
       obOut.writeObject(prods);
+
+      obOut.close();
+    } catch (IOException ioe) {
+			ioe.printStackTrace();
     }
+			
   }
 
   /**
@@ -111,6 +118,12 @@ public class WarehouseManager {
    * @@throws UnavailableFileException
    */
   public void load(String filename) throws UnavailableFileException, ClassNotFoundException  {
+    ObjectInputStream objIn = null;
+      objIn = new ObjectInputStream(new FileInputStream(filename));
+      objIn.readObject();
+
+      if (objIn != null)
+        objIn.close();
 
   }
 
@@ -143,3 +156,4 @@ public class WarehouseManager {
   }
 
 }
+

@@ -23,7 +23,7 @@ public class Warehouse implements Serializable {
   private double _accountableBalance;
   private double _availableBalance;
   private static int _date; 
-  private Parser _parser;
+  private transient Parser _parser;
 
   public Warehouse() {
 	  _parser = new Parser(this);
@@ -128,8 +128,7 @@ public class Warehouse implements Serializable {
 	  _date += timeIncrease;
   }
 
-  // I love lolipops
-  // Me too
+  
 
 
 
@@ -137,3 +136,4 @@ public class Warehouse implements Serializable {
   
 
 }
+
