@@ -118,13 +118,15 @@ public class WarehouseManager {
    * @@throws UnavailableFileException
    */
   public void load(String filename) throws UnavailableFileException, ClassNotFoundException  {
-    ObjectInputStream objIn = null;
+    try {
+      ObjectInputStream objIn = null;
       objIn = new ObjectInputStream(new FileInputStream(filename));
       objIn.readObject();
-
       if (objIn != null)
         objIn.close();
-
+    } catch (IOException ioe) {
+        ioe.printStackTrace();
+    }
   }
 
   /**
@@ -134,7 +136,7 @@ public class WarehouseManager {
   public void importFile(String textfile) throws ImportFileException {
     try {
       _warehouse.importFile(textfile);
-    } catch (IOException | BadEntryException /* FIXME maybe other exceptions */ e) {
+    } catch (IOException | BadEntryException | UnavailableFileException e) {
       throw new ImportFileException(textfile, e);
     }
   }
