@@ -1,0 +1,6 @@
+Compilar
+javac -cp po-uilib-v11.jar:. `find ggc -name "*.java"`
+Correr
+java -cp po-uilib-v11.jar:. ggc.app.App
+Correr a partir de um ficheiro de estado inicial
+java -Dimport=ficheiro.im -cp po-uilib.jar:. ggc.app.App
