@@ -85,19 +85,15 @@ public class WarehouseManager {
    * @@throws MissingFileAssociationException
    */
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-    ArrayList<Partner> parts = new ArrayList<>();
-    ArrayList<Product> prods = new ArrayList<>();
+    try {
+      ObjectOutputStream objIn = null;
+      objOut = new ObjectOutputStream(new FileInputStream(filename));
+      objOut.writeObject(_warehouse);
       
-    try (ObjectOutputStream obOut = 
-        new ObjectOutputStream(new FileOutputStream(_filename))) {
-      parts.addAll(_warehouse.getPartners());
-      prods.addAll(_warehouse.getProducts());
-      obOut.writeObject(parts);
-      obOut.writeObject(prods);
+      objOut.close();
 
-      obOut.close();
     } catch (IOException ioe) {
-			ioe.printStackTrace();
+        ioe.printStackTrace();
     }
 			
   }
@@ -122,8 +118,9 @@ public class WarehouseManager {
       ObjectInputStream objIn = null;
       objIn = new ObjectInputStream(new FileInputStream(filename));
       objIn.readObject();
-      if (objIn != null)
-        objIn.close();
+
+      objIn.close();
+
     } catch (IOException ioe) {
         ioe.printStackTrace();
     }

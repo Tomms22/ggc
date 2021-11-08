@@ -8,7 +8,10 @@ import java.util.ArrayList;
  * 
  * @author Ana Torres 99050 & Tomás Vicente 90916 |grupo 48 L04|
  */
-public abstract class Product {
+public abstract class Product extends Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     // ID of the product
     private String _id;
 

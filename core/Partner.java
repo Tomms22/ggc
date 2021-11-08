@@ -1,6 +1,9 @@
 package ggc.core;
 
-public class Partner {
+import java.io.Serializable;
+
+public class Partner implements Serializable {
+    private static final long serialVersionUID = 2L;
 	private String _name;
     private String _address;
     private String _id;

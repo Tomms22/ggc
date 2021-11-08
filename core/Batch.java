@@ -1,11 +1,16 @@
 package ggc.core;
 
+import java.io.Serializable;
+
 /**
  * class Batch used to represent batches of the products being exchanged by the warehouse and its partners
  * 
  * @author Ana Torres 99050 & Tomás Vicente 90916 |grupo 48 L04|
  */
-public class Batch {
+public class Batch implements Serializable {
+
+    private static final long serialVersionUID = 3L;
+    
     // batch's supplier
     private Partner _supplier;
 
