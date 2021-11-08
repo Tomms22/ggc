@@ -1,6 +1,7 @@
 package ggc.core;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * abstract class Product used to represent the products being exchanged by the warehouse and its partners
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * 
  * @author Ana Torres 99050 & Tomás Vicente 90916 |grupo 48 L04|
  */
-public abstract class Product extends Serializable {
+public abstract class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -56,15 +56,17 @@ public class WarehouseManager {
   }
 
   public Partner createPartner(String id, String name, String address){
-    return createPartner(id, name, address);
+	//System.out.println("criando parceiro wm");
+    return _warehouse.createPartner(id, name, address);
   }
 
   public void addPartner(Partner partner){
+	//System.out.println("adicionando parceiro wm");
     _warehouse.addPartner(partner);;
   }
  
   public Product createSimpleProduct(String id, double price){
-    return createSimpleProduct(id, price);
+    return _warehouse.createSimpleProduct(id, price);
   }
 
   public void addSimpleProduct(SimpleProduct product){
@@ -86,8 +88,8 @@ public class WarehouseManager {
    */
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
     try {
-      ObjectOutputStream objIn = null;
-      objOut = new ObjectOutputStream(new FileInputStream(filename));
+      ObjectOutputStream objOut = null;
+      objOut = new ObjectOutputStream(new FileOutputStream(_filename));
       objOut.writeObject(_warehouse);
       
       objOut.close();
@@ -116,7 +118,7 @@ public class WarehouseManager {
   public void load(String filename) throws UnavailableFileException, ClassNotFoundException  {
     try {
       ObjectInputStream objIn = null;
-      objIn = new ObjectInputStream(new FileInputStream(filename));
+      objIn = new ObjectInputStream(new FileInputStream(_filename));
       objIn.readObject();
 
       objIn.close();
@@ -133,7 +135,7 @@ public class WarehouseManager {
   public void importFile(String textfile) throws ImportFileException {
     try {
       _warehouse.importFile(textfile);
-    } catch (IOException | BadEntryException | UnavailableFileException e) {
+    } catch (IOException | BadEntryException e) {
       throw new ImportFileException(textfile, e);
     }
   }
