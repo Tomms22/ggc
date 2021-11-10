@@ -1,8 +1,9 @@
 package ggc.core;
 
-// Representation of a trade between Warehouse and a Partner
-public abstract class Transaction {
-	// Stats for keeping relationships with Partners
+import java.io.Serializable;
+
+abstract class Transaction implements Serializable {
+    private static final long serialVersionUID = 4L;
     public static int _numberOfTransactions;
 	private int _id;
     private int _paymentDeadline;
@@ -14,8 +15,7 @@ public abstract class Transaction {
     private int _quantity;
     private Product _product;
     private Partner _partner;
-    
-    // Generic constructor for any transaction
+
     Transaction(Product prod, int quant, Partner part, int deadline){
         _id = _numberOfTransactions++;
         _product = prod;
@@ -24,8 +24,8 @@ public abstract class Transaction {
         _partner = part;
     }
 
-    String getID(){
-        return "" + _id;
+    int getId(){
+        return _id;
     }
 
     Product getProduct(){
@@ -57,15 +57,13 @@ public abstract class Transaction {
     }
 
     String getProductName(){
-        return _product.getProductID();
+        return _product.getId();
     }
-    
-    // generically pays for a transaction, val might be different from baseval
-    void pay(double val){
+
+    void pay(double baseVal){
         _isPaid = true;
-        _paidValue = val;
+        _baseValue = baseVal;
     }
-    
-    // For Serialization purposes, the class Transaction is not used inside the system
+
     public abstract String toString();
 }

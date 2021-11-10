@@ -21,7 +21,7 @@ public class Batch implements Serializable {
     private int _stock;
 
     // ID of the batch's product
-    private String _productID;
+    private Product _product;
 
     /**
      * Constructor
@@ -31,11 +31,11 @@ public class Batch implements Serializable {
      * @param stock the input value of the batch's total stock
      * @param productID the input value of the batch's product's ID
      */
-    Batch(Partner supplier, double price, int stock, String productID){
+    Batch(Partner supplier, double price, int stock, Product product){
         _supplier = supplier;
         _pricePerUnit = price;
         _stock = stock;
-        _productID = productID;
+        _product = product;
     }
 
     /**
@@ -55,14 +55,14 @@ public class Batch implements Serializable {
      * @param unit -> number of units to remove from the batch's stock
      * @return stock you coudn't remove (0 if you could remove all you wanted)
 	 */
-    int removeUnits(int unit){
+    int removeUnits(int unit) {
         int leftoverStock = 0;
-        if(_stock - unit < 0){
+        if(_stock < unit) {
             leftoverStock = unit - _stock;
             _stock = 0;
         }
         else
-            _stock-= unit;
+            _stock -= unit;
         return leftoverStock;
     }
 
@@ -71,7 +71,7 @@ public class Batch implements Serializable {
      * 
 	 * @return the batch's stock
 	 */
-    int getStock(){
+    int getStock() {
         return _stock;
     }
 
@@ -80,26 +80,26 @@ public class Batch implements Serializable {
      * 
      * @param newPrice the batch's new price
 	 */
-    void changePrice(double newPrice){
+    void changePrice(double newPrice) {
         _pricePerUnit = newPrice;
     }
 
     /**
-	 * Getter of the batch's product's ID
+	 * Getter of the batch's product
      * 
-	 * @return the batch's product's ID
+	 * @return the batch's product
 	 */
-    String getProductID(){
-        return _productID;
+    Product getProduct() {
+        return _product;
     }
 
     /**
-	 * Getter of the batch's supplier's ID
+	 * Getter of the batch's supplier
      * 
-	 * @return the batch's supplier's ID
+	 * @return the batch's supplier
 	 */
-    String getPartnerID(){
-        return _supplier.getName();
+    Partner getPartner() {
+        return _supplier;
     }
     
     /**
@@ -108,6 +108,6 @@ public class Batch implements Serializable {
      * @return the batch's information in string form ( productID|supplier|price|stock )
      */
 	public String toString(){
-		return String.join("|", _productID, _supplier.getName(), "" +_pricePerUnit, ""+_stock);
+		return String.join("|", _product.getId(), _supplier.getName(), "" +_pricePerUnit, ""+_stock);
 	}
 }

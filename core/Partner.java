@@ -25,7 +25,7 @@ public class Partner implements Serializable {
         return _name;
     }
 
-    String getID(){
+    String getId(){
         return _id;
     }
 

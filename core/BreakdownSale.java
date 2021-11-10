@@ -3,7 +3,7 @@ package ggc.core;
 import java.util.ArrayList;
 
 // Equivalent to selling target DerivedProduct and buying back its component parts
-public class BreakdownSale extends Sale{
+class BreakdownSale extends Sale{
 	// Gets components from various batches
     ArrayList<Batch> _batches = new ArrayList<>();
     

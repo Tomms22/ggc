@@ -1,116 +1,96 @@
 package ggc.core;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.ArrayList;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import pt.tecnico.uilib.text.TextInteraction;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import ggc.core.exception.BadEntryException;
 
 /**
  * Class Warehouse implements a warehouse.
  */
-public class Warehouse implements Serializable {
+class Warehouse implements Serializable {
 
   /** Serial number for serialization. */
   private static final long serialVersionUID = 202109192006L;
 
-  private ArrayList<Product> _products;
-  private ArrayList<Partner> _partners;
-  private ArrayList<Batch> _batches;	
+  private Map<String, Product> _products;
+  private Map<String, Partner>  _partners;
+  private Collection<Batch> _batches;	
   private double _accountableBalance;
   private double _availableBalance;
   private static int _date; 
-  private transient Parser _parser;
 
-  public Warehouse() {
-	  _parser = new Parser(this);
-    _products = new ArrayList<>();
-    _partners = new ArrayList<>();
+  Warehouse() {
+    _products = new HashMap<>();
+    _partners = new HashMap<>();
     _batches = new ArrayList<>();
     _date = 0;
   }
   /**
-   * @param txtfile filename to be loaded.
+   * @param txtfile filename to be loaded
+   * @param parser parser to be used
    * @throws IOException
    * @throws BadEntryException
    */
-  void importFile(String txtfile) throws IOException, BadEntryException {
-	  _parser.parseFile(txtfile);
+  void importFile(String txtfile, Parser parser) throws IOException, BadEntryException {
+	  parser.parseFile(txtfile);
   }
   
-  Partner getPartner(String id) {
-    Partner wantedPartner = null;
-    for(Partner p: _partners)
-      if((p.getID()).equals(id))
-        wantedPartner = p;
-    return wantedPartner;
+  Partner getPartner(String partnerId) {
+    return _partners.get(partnerId);
   }
   
   Collection<Partner> getPartners() {
-	  return _partners;
+	  return _partners.values();
   }
   
-  Product getProduct(String id) {
-    Product wantedProduct = null;
-    for(Product p: _products)
-      if((p.getProductID()).equals(id))
-        wantedProduct = p;
-    return wantedProduct;
+  Product getProduct(String productId) {
+    return _products.get(productId);
   }
 
   Collection<Product> getProducts() {
-	  return _products;
+	  return _products.values();
   }
 
   Collection<Batch> getBatches(){
     return _batches;
   }
 
-  Collection<Batch> getProductBatches(String productID) {
+  Collection<Batch> getProductBatches(String productId) {
     ArrayList<Batch> productBatches = new ArrayList<>();
-    for(Batch batch: _batches)
-      if(productID.equals(batch.getProductID()))
+    for (Batch batch: _batches)
+      if (productId.equals(batch.getProduct().getId()))
         productBatches.add(batch);
     return productBatches;
   }
 
-  Collection<Batch> getPartnerBatches(String partnerID) {
+  Collection<Batch> getPartnerBatches(String partnerId) {
     ArrayList<Batch> partnerBatches = new ArrayList<>();
-    for(Batch batch: _batches)
-      if(partnerID.equals(batch.getPartnerID()))
+    for (Batch batch: _batches)
+      if (partnerId.equals(batch.getPartner().getId()))
         partnerBatches.add(batch);
     return partnerBatches;
   }
 
-  Partner createPartner(String id, String name, String address){
-    return new Partner(id, name, address);
-  }
 
   void addPartner(Partner partner){
-    _partners.add(partner);
-  }
-
-  Product createSimpleProduct(String id, double price){
-    return new SimpleProduct(id, price);
+    _partners.put(partner.getId(), partner);
   }
 
   void addProduct(Product product){
-    _products.add(product);
-  }
-
-  Batch createBatch(Partner supplier, double price, int stock, String productID){
-    return new Batch(supplier, price, stock, productID);
+    _products.put(product.getId(), product);
   }
 
   void addBatch(Batch batch){
     _batches.add(batch);
-    getProduct(batch.getProductID()).addBatch(batch);
+    batch.getProduct().addBatch(batch);
   }
 
-  double getAccountableBalance(){
+  double getAccountableBalance() {
     return _accountableBalance;
   }
 

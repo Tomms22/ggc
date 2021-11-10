@@ -3,7 +3,7 @@ package ggc.core;
 import ggc.core.Warehouse;
 
 // Representation of a buying transaction which is instantly paid
-public class Acquisition extends Transaction{
+class Acquisition extends Transaction{
 	
 	// Every acquisition is linked with the Product, its price, quantity and Partner of choice
 	// It is also instantly paid

@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 
  * @author Ana Torres 99050 & Tomás Vicente 90916 |grupo 48 L04|
  */
-public abstract class Product implements Serializable {
+abstract class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

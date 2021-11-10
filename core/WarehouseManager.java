@@ -1,6 +1,5 @@
 package ggc.core;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -55,30 +54,16 @@ public class WarehouseManager {
     return _warehouse.getPartnerBatches(partnerID);
   }
 
-  public Partner createPartner(String id, String name, String address){
-	//System.out.println("criando parceiro wm");
-    return _warehouse.createPartner(id, name, address);
+  public void addPartner(String id, String name, String address){
+    _warehouse.addPartner(new Partner(id, name, address));
   }
 
-  public void addPartner(Partner partner){
-	//System.out.println("adicionando parceiro wm");
-    _warehouse.addPartner(partner);;
-  }
- 
-  public Product createSimpleProduct(String id, double price){
-    return _warehouse.createSimpleProduct(id, price);
+  public void addProduct(String id, double price){
+    _warehouse.addProduct(new SimpleProduct(id, price));
   }
 
-  public void addSimpleProduct(SimpleProduct product){
-    _warehouse.addProduct(product);;
-  }
-
-  public Batch createBatch(Partner supplier, double price, int stock, String productID){
-    return createBatch(supplier, price, stock, productID);
-  }
-
-  void addBatch(Batch batch){
-    addBatch(batch);;
+  void addBatch(Partner supplier, double price, int stock, String productId) {
+    _warehouse.addBatch(new Batch(supplier, price, stock, _warehouse.getProduct(productId)));
   }
 
   /**
@@ -87,17 +72,14 @@ public class WarehouseManager {
    * @@throws MissingFileAssociationException
    */
   public void save() throws IOException, FileNotFoundException, MissingFileAssociationException {
-    try {
-      ObjectOutputStream objOut = null;
-      objOut = new ObjectOutputStream(new FileOutputStream(_filename));
-      objOut.writeObject(_warehouse);
-      
-      objOut.close();
+    try (ObjectOutputStream obOut = new ObjectOutputStream(new FileOutputStream(_filename))) {
+
+      obOut.writeObject(_warehouse);
+      obOut.writeObject(Warehouse.getDate());
 
     } catch (IOException ioe) {
-        ioe.printStackTrace();
+      ioe.printStackTrace();
     }
-			
   }
 
   /**
@@ -116,12 +98,9 @@ public class WarehouseManager {
    * @@throws UnavailableFileException
    */
   public void load(String filename) throws UnavailableFileException, ClassNotFoundException  {
-    try {
-      ObjectInputStream objIn = null;
-      objIn = new ObjectInputStream(new FileInputStream(_filename));
-      objIn.readObject();
+    try (ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(filename))) {
 
-      objIn.close();
+      objIn.readObject();
 
     } catch (IOException ioe) {
         ioe.printStackTrace();
@@ -134,7 +113,7 @@ public class WarehouseManager {
    */
   public void importFile(String textfile) throws ImportFileException {
     try {
-      _warehouse.importFile(textfile);
+      _warehouse.importFile(textfile, new Parser(this));
     } catch (IOException | BadEntryException e) {
       throw new ImportFileException(textfile, e);
     }

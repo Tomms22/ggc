@@ -1,6 +1,8 @@
 package ggc.core;
 
-// TODO List of components and the DerivedProduct they create
-public class Recipe {
+import java.io.Serializable;
+
+class Recipe implements Serializable {
+    private static final long serialVersionUID = 5L;
 
 }

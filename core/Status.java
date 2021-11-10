@@ -1,7 +1,7 @@
 package ggc.core;
 
 // The 3 ranks of Partner, with their lowerBound of classification
-public enum Status {
+enum Status {
 	NORMAL(0), SELECTION(2000), ELITE(25000);
 	private int _points;
 	

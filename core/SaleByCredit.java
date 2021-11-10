@@ -1,18 +1,18 @@
 package ggc.core;
 
 // Sale paid by a specific metric
-public class SaleByCredit extends Sale {
+class SaleByCredit extends Sale {
 	// Amount paid depends on who and when it was paid
 	private double _amountPaid;	
 	
 	// Generic Transaction
-	SaleByCredit(Product p, int q, Partner part, int dl) {
-		super(p, q, part, dl);
+	SaleByCredit(Product product, int quantity, Partner partner, int deadline) {
+		super(product, quantity, partner, deadline);
 	}
 	
 	// For Serialization purposes
 	public String toString(){
-        return String.join("| ", super.getID(), super.getPartnerName(),
+        return String.join("|", super.getId(), super.getPartnerName(),
          super.getProductName(), "" + super.getQuantity(),
           "" + super.getBaseValue(),"" + super.getPaidValue(),
            "" + super.getDeadline()); 

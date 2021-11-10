@@ -1,11 +1,11 @@
 package ggc.core;
 
 // Product without component parts
-public class SimpleProduct extends Product{
+class SimpleProduct extends Product{
     
     // similar to its superclass
-    SimpleProduct(String productID, Double price){
-        super(productID, price);
+    SimpleProduct(String productId, Double price){
+        super(productId, price);
     }
 
     // Relies on its Batch to get a quantity in it, but not every one in the Warehouse

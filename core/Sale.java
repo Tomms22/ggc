@@ -3,7 +3,7 @@ package ggc.core;
 import ggc.core.Warehouse;
 
 // Sale from a Warehouse to a Partner
-public abstract class Sale extends Transaction{
+abstract class Sale extends Transaction{
 	
 	// Every Transactions has a quantity of a Product, Partner and a payment deadline
     Sale(Product prod, int quant, Partner part, int deadline){
@@ -11,7 +11,7 @@ public abstract class Sale extends Transaction{
     }
     
     // Gives the appropriate Value for the period of payment of a given date
-    PaymentPeriods getPaymentPeriod(int deadline, int N){
+    PaymentPeriods getPaymentPeriod(int deadline, int n){
         int currentDate = Warehouse.getDate();
         int dateDiff = deadline - currentDate;
 
@@ -34,12 +34,12 @@ public abstract class Sale extends Transaction{
         int deadline = super.getDeadline();
         double _discount;
         // penalty
-        int N = 5;
+        int n = 5;
         PaymentPeriods period;
 
         // N = 5 simpleProduct and N = 3 derivateProduct
 
-        period = getPaymentPeriod(deadline, N);
+        period = getPaymentPeriod(deadline, n);
 
     }   
 }
