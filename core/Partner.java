@@ -40,10 +40,10 @@ public class Partner implements Serializable {
 
     // for external representation of instance
     public String toString(){
-        String acqValue = "" +_acquisitionValue;
+        String acqValue = "" + Math.round(_acquisitionValue);
         String points = "" + _points;
-        String sValue = "" + _saleValue;
-        String paidSValue = "" + _paidSaleValue;
+        String sValue = "" + Math.round(_saleValue);
+        String paidSValue = "" + Math.round(_paidSaleValue);
         String status = "" + _status;
         return String.join("|", _id, _name, _address, status, points, acqValue, sValue, paidSValue);
     }
