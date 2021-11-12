@@ -23,12 +23,11 @@ class DoOpenFile extends Command<WarehouseManager> {
     
     try {
       String filename = stringField(Label.OPEN);
-      performCommand();
       _receiver.load(filename);
     } catch (UnavailableFileException ufe) {
-      throw new FileOpenFailedException(ufe.getFilename());
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+        throw new FileOpenFailedException(ufe.getFilename());
+    } catch (ClassNotFoundException cnfe) {
+        cnte.printStackTrace();
     }
   }
 

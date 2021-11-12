@@ -63,8 +63,18 @@ public class WarehouseManager {
     _warehouse.addProduct(new SimpleProduct(id, price));
   }
 
-  void addBatch(Partner supplier, double price, int stock, String productId) {
+  public void addBatch(Partner supplier, double price, int stock, String productId) {
     _warehouse.addBatch(new Batch(supplier, price, stock, _warehouse.getProduct(productId)));
+  }
+
+  public   Collection<Batch> getBatchesUnderGivenPrice(double price) {
+    List<Batch> batchesUnderGivenPrice = new ArrayList<>();
+    
+    for(Batch batch: _batches)
+      if(batch.getPrice() < price)
+        batchesUnderGivenPrice.add(batch);
+    
+    return batchesUnderGivenPrice;
   }
 
   /**
@@ -77,6 +87,7 @@ public class WarehouseManager {
 
       obOut.writeObject(_warehouse);
       obOut.writeObject(Warehouse.getDate());
+      obOut.writeObject(Transaction.getNumberOfTransactions());
 
     } catch (IOException ioe) {
       ioe.printStackTrace();
@@ -144,10 +155,6 @@ public class WarehouseManager {
     _warehouse.doToggleNotification(partnerID, product);
   }
 
-  public boolean hasProduct(String productID){
-    return _warehouse.hasProduct(productID);
-  }
-
   public String getPartnerToString(String partnerID){
     return _warehouse.getPartnerToString(partnerID);
   }
@@ -160,8 +167,5 @@ public class WarehouseManager {
     return _warehouse.getPartnerSales(partnerID);    
   }
 
-  public ArrayList<String> getBatchesUnderPriceToString(String productId, double price){
-    return _warehouse.getBatchesUnderPriceToString(productId, price);
-  }
 }
 

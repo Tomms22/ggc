@@ -41,15 +41,17 @@ class Warehouse implements Serializable {
   }
   
   Partner getPartner(String partnerId) {
-    return _partners.get(partnerId);
+    return _partners.get(partnerId.toUpperCase());
   }
   
   Collection<Partner> getPartners() {
-	  return _partners.values();
+    TreeMap<String, Partner> sortedPartners = new TreeMap<>();
+    sortedPartners.putAll(_partners);
+	  return sortedPartners.values();
   }
   
   Product getProduct(String productId) {
-    return _products.get(productId);
+    return _products.get(productId.toUpperCase());
   }
 
   Collection<Product> getProducts() {
@@ -61,34 +63,33 @@ class Warehouse implements Serializable {
   }
 
   Collection<Batch> getProductBatches(String productId) {
-    ArrayList<Batch> productBatches = new ArrayList<>();
-    for (Batch batch: _batches)
-      if (productId.equals(batch.getProduct().getID()))
-        productBatches.add(batch);
-    return productBatches;
+    return getProduct(productId).getBatches();
   }
 
   Collection<Batch> getPartnerBatches(String partnerId) {
-    ArrayList<Batch> partnerBatches = new ArrayList<>();
-    for (Batch batch: _batches)
-      if (partnerId.equals(batch.getPartner().getID()))
+    ArrayList<Batch> partnerBatches = new ArrayList<>(); 
+    for (Batch batch: _batches) {
+      String supplierId = batch.getPartner().getId().toUpperCase();
+      if ((partnerId.toUpperCase()).equals(supplierId))
         partnerBatches.add(batch);
+    }
     return partnerBatches;
   }
 
 
-  boolean addPartner(String id, String name, String address){
-    Partner p = new Partner(id, name, address);
-
-    if(_partners.get(id) == null){
-      _partners.put(id, p);
-      return true;
-    }
-    return false;
+  // devolve true se teve sucesso em adicionar o parceiro e false caso contrario
+  boolean addPartner(Partner partner){
+    String partnerId = partner.getId().toUpperCase();
+    Boolean exists = false;
+    if(_partners.containsKey(partnerId))
+      exists = true;
+    else
+      _partners.put(partnerId, partner);
+    return !exists;
   }
 
   void addProduct(Product product){
-    _products.put(product.getID(), product);
+    _products.put(product.getId().toUpperCase(), product);
   }
 
   void addBatch(Batch batch){
@@ -115,36 +116,18 @@ class Warehouse implements Serializable {
   }
 
   void doToggleNotification(String partnerID, String productId){
-    _partners.get(partnerID).toggleNotification(_products.get(productId));
+    _partners.get(partnerID.toUpperCase()).toggleNotification(_products.get(productId.toUpperCase()));
   }
 
   double getPartnerPayments(String partnerID){
-    return _partners.get(partnerID).getPartnerPayments();
+    return _partners.get(partnerID.toUpperCase()).getPartnerPayments();
   }  
 
-  boolean hasProduct(String productID){
-    return (_products.get(productID) != null);
-  }
-
-  String getPartnerToString(String partnerID){
-    return _partners.get(partnerID).toString();
-  }
-
   Collection<Acquisition> getPartnerAcquisitions(String partnerID){
-    return _partners.get(partnerID).getPartnerAcquisitions();
+    return _partners.get(partnerID.toUpperCase()).getPartnerAcquisitions();
   }
   Collection<Sale> getPartnerSales(String partnerID){
-    return _partners.get(partnerID).getPartnerSales();
-  }
-
-  ArrayList<String> getBatchesUnderPriceToString(String productId, double price){
-    ArrayList<String> res = new ArrayList<>();
-
-    for(Batch b : _batches)
-      if(b.getProduct().getID() == productId && b.getTotalPrice() < price)
-        res.add(b.toString());
-
-    return res;
+    return _partners.get(partnerID.toUpperCase()).getPartnerSales();
   }
 }
 

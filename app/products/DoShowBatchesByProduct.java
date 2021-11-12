@@ -19,17 +19,17 @@ class DoShowBatchesByProduct extends Command<WarehouseManager> {
 
   @Override
   public final void execute() throws CommandException {
-    String productID;
+  String productId = stringField(Label.SHOW_BATCHES_BY_PRODUCT);
 
-    productID = stringField(Label.SHOW_BATCHES_BY_PRODUCT);
-
-    if(_receiver.getProductBatches(productID).isEmpty()){
-      throw new UnknownProductKeyException(productID);
-    }
+  try {
+    _receiver.getProduct(productId);
 
     for(Batch batch: _receiver.getProductBatches(productID))
       _display.addLine(batch.toString());
     _display.display();
-  }
 
+  } catch( NullPointerException npe) {
+      throw new UnknownProductKeyException(productId);
+  }
+}
 }

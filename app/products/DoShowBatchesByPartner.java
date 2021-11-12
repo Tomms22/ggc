@@ -19,19 +19,17 @@ class DoShowBatchesByPartner extends Command<WarehouseManager> {
 
   @Override
   public final void execute() throws CommandException, UnknownPartnerKeyException {
-    String partnerID;
+    String partnerId = stringField(Label.SHOW_BATCHES_SUPPLIED_BY_PARTNER);
 
-    partnerID = stringField(Label.SHOW_BATCHES_SUPPLIED_BY_PARTNER);
+    try {
+      _receiver.getPartner(partnerId);
 
-    if(_receiver.getPartnerBatches(partnerID).isEmpty()){
-      throw new UnknownPartnerKeyException(partnerID);   
-      }
-
-    for(Batch batch: _receiver.getPartnerBatches(partnerID))
-      _display.addLine(batch.toString());
-    _display.display();
-
+      for(Batch batch: _receiver.getPartnerBatches(partnerId))
+        _display.addLine(batch.toString());
+      _display.display();
+    } catch( NullPointerException npe) {
+        throw new UnknownPartnerKeyException(partnerId);
     }
-
+  }
 }
 

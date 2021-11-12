@@ -12,7 +12,7 @@ class DoShowPartnerAcquisitions extends Command<WarehouseManager> {
 
   DoShowPartnerAcquisitions(WarehouseManager receiver) {
     super(Label.SHOW_PARTNER_ACQUISITIONS, receiver);
-    addStringField("ID", Message.requestPartnerKey());
+    addStringField("id", Message.requestPartnerKey());
   }
 
   /** 
@@ -20,23 +20,14 @@ class DoShowPartnerAcquisitions extends Command<WarehouseManager> {
   */
   @Override
   public void execute() throws CommandException, UnknownPartnerKeyException {
-    String id = stringField("ID");
+    String partnerId = stringField("id");
 
     try{
-      if(_receiver.getPartner(id) == null)
-        throw new UnknownPartnerKeyException(id);
-      for(Object acquisition: _receiver.getPartnerAcquisitions(id))
+      for(Object acquisition: _receiver.getPartnerAcquisitions(partnerId))
         _display.addLine(acquisition);
       _display.display();
-    } catch(CommandException e){
-      throw e;
-    } catch(NullPointerException e) {
-      _display.popup("null");
-    } catch(StackOverflowError e) {
-      _display.popup("stackoverflow");
-    } catch(Exception e) {
-      _display.popup("error");
+    } catch( NullPointerException npe) {
+        throw new UnknownPartnerKeyException(partnerId);
     }
   }
-
 }

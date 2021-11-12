@@ -16,16 +16,8 @@ class DoShowAllPartners extends Command<WarehouseManager> {
 
   @Override
   public void execute(){ /*throws CommandExceptio*/
-    try{
-      for(Object partner: _receiver.getPartners())
-        _display.addLine(partner.toString());
-      _display.display();
-    } catch(NullPointerException e) {
-      _display.popup("null");
-    } catch(StackOverflowError e) {
-      _display.popup("stackoverflow");
-    } catch(Exception e) {
-      _display.popup("error");
-    }
+    for(Partner part: _receiver.getPartners())
+    _display.addLine(part.toString());
+  _display.display();
   }
 }

@@ -21,23 +21,15 @@ class DoShowPartnerSales extends Command<WarehouseManager> {
   */
   @Override
   public void execute() throws CommandException {
-    String id = stringField("ID");
+  String partnerId = stringField("id");
 
-    try{
-      if(_receiver.getPartner(id) == null)
-        throw new UnknownPartnerKeyException(id);
-      for(Object sale: _receiver.getPartnerSales(id))
-        _display.addLine(sale);
-      _display.display();
-    } catch(CommandException e){
-      throw e;
-    } catch(NullPointerException e) {
-      _display.popup("null");
-    } catch(StackOverflowError e) {
-      _display.popup("stackoverflow");
-    } catch(Exception e) {
-      _display.popup("error");
-    }
+  try{
+    for(Object sale: _receiver.getPartnerSales(partnerId))
+    _display.addLine(sale);
+  _display.display();
+  } catch( NullPointerException npe) {
+      throw new UnknownPartnerKeyException(partnerId);
   }
+}
 
 }

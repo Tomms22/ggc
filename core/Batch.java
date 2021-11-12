@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 
  * @author Ana Torres 99050 & Tomás Vicente 90916 |grupo 48 L04|
  */
-public class Batch implements Serializable {
+class Batch implements Serializable {
 
     private static final long serialVersionUID = 3L;
     

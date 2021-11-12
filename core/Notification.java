@@ -18,11 +18,11 @@ class Notification implements Serializable {
     }
 
     public String toString(){
-        return String.join("|", _type, _product.getID(), "" + _product.getProductMaxPrice());
+        return String.join("|", _type, _product.getId(), "" + _product.getProductMaxPrice());
     }
 
     String getProductId(){
-        return _product.getID();
+        return _product.getId();
     }
 
 }

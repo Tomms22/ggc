@@ -13,24 +13,25 @@ class DoToggleProductNotifications extends Command<WarehouseManager> {
 
   DoToggleProductNotifications(WarehouseManager receiver) {
     super(Label.TOGGLE_PRODUCT_NOTIFICATIONS, receiver);
-    addStringField("partnerID", Message.requestPartnerKey());
-    addStringField("productID", Message.requestProductKey());
+    addStringField("partnerId", Message.requestPartnerKey());
+    addStringField("productId", Message.requestProductKey());
   }
 
   @Override
   public void execute() throws CommandException {
-    String partnerID = stringField("partnerID");
-    String productID = stringField("productID");
+    String partnerId = stringField("partnerId");
+    String productId = stringField("productId");
 
     try{
-      if(_receiver.getPartner(partnerID) == null)
-        throw new UnknownPartnerKeyException(partnerID);
-      if(_receiver.getProduct(productID) == null)
-        throw new UnknownProductKeyException(productID);
-      _receiver.doToggleNotification(partnerID, productID);
-    } catch(NullPointerException e) {
-      _display.popup("null");
+        _receiver.getPartner(partnerId);
+        _receiver.doToggleNotification(partnerId, productId);
+        try{
+          _receiver.getProduct(productId);
+        } catch(NullPointerException npe) {
+            throw new UnknownProductKeyException(productId);
+        }
+    } catch(NullPointerException npe) {
+        throw new UnknownPartnerKeyException(partnerId);
     }
   }
-
 }

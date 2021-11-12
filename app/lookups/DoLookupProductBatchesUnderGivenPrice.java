@@ -11,18 +11,15 @@ public class DoLookupProductBatchesUnderGivenPrice extends Command<WarehouseMana
 
   public DoLookupProductBatchesUnderGivenPrice(WarehouseManager receiver) {
     super(Label.PRODUCTS_UNDER_PRICE, receiver);
-    addStringField("productId", "Registar Produto:");
-    // alterar string mensagem
-    addRealField(Label.PRODUCTS_UNDER_PRICE, "Produtos abaixo do preço:");
+    addRealField(Label.PRODUCTS_UNDER_PRICE, Message.requestPriceLimit());
   }
 
   @Override
   public void execute() throws CommandException {
-    String productId = stringField("productId");
     double price = realField(Label.PRODUCTS_UNDER_PRICE);
-    
-    for(String batchString : _receiver.getBatchesUnderPriceToString(productId, price))
-      _display.addLine(batchString);
+
+    for(Batch batch: _receiver.getProductBatchesUnderGivenPrice(price))
+        _display.addLine(batch.toString());
     _display.display();
   }
 

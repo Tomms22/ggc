@@ -24,6 +24,10 @@ abstract class Transaction implements Serializable {
         _partner = part;
     }
 
+    static int getNumberOfTransactions() {
+        return _numberOfTransactions;
+    }
+
     int getId(){
         return _id;
     }

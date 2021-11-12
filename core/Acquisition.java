@@ -14,8 +14,8 @@ class Acquisition extends Transaction{
 	
 	// For Serialization purposes
     public String toString(){
-        return String.join("|", "" + super.getID(), super.getPartnerName(),
-         super.getProduct().getID(), "" + super.getQuantity(),
+        return String.join("|", "" + super.getId(), super.getPartnerName(),
+         super.getProduct().getId(), "" + super.getQuantity(),
           "" + super.getBaseValue(), "" + super.getDeadline());
     }
 }

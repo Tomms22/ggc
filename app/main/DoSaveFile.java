@@ -19,5 +19,6 @@ class DoSaveFile extends Command<WarehouseManager> {
   @Override
   public final void execute() throws CommandException {
     String filename = stringField(Label.SAVE);
+    _receiver.saveAs(filename);
   }
 }

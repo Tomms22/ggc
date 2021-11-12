@@ -19,18 +19,14 @@ abstract class Product implements Serializable {
     // list of all the product's batches
     private ArrayList<Batch> _batches;
 
-    // base price of the product
-    private double _price;
 
     /**
      * Constructor
      * 
-     * @param productID the input value  of the product's ID
-     * @param price the input value of the product's price
+     * @param productId the input value  of the product's ID
      */
-    Product(String productID, Double price){
-        _id = productID;
-        _price = price;
+    Product(String productId){
+        _id = productId;
     }
 
     /**
@@ -38,25 +34,36 @@ abstract class Product implements Serializable {
      * 
 	 * @return the product's ID
 	 */
-    String getID(){
+    String getId(){
         return _id;
     }
 
     /**
-	 * Getter of the product's base price
+	 * Getter of the product's mx price
      * 
 	 * @return the product's price
 	 */
-    double getProductMaxPrice(){
-        return _price;
+    double getProductMaxPrice() {
+        double maxPrice = 0;
+        double newPrice;
+        for(Batch batch: _batches)
+            if((newPrice = batch.getPrice()) > maxPrice)
+                maxPrice = newPrice;
+        return maxPrice;
     }
 
-    /**
+        /**
 	 * Getter of the product's current stock
+     * Relies on its Batch to get a quantity in it, but not every one in the Warehouse
      * 
 	 * @return the product's stock
 	 */
-    abstract int getCurrentStock();
+    int getCurrentStock() {
+        int stock = 0;
+        for(Batch batch : _batches)
+            stock += batch.getStock();
+        return stock;
+        }
 
     /**
 	 * Getter of the product's batches
@@ -83,7 +90,7 @@ abstract class Product implements Serializable {
      * @return the product's information in string form ( productID|price )
      */
     public String toString(){
-        return _id + '|' + _price;
+        return _id + '|' + getProductMaxPrice() + getCurrentStock();
     }
 }
 

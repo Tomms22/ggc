@@ -31,7 +31,7 @@ class Partner implements Serializable {
         return _name;
     }
 
-    String getID(){
+    String getId(){
         return _id;
     }
 
@@ -41,27 +41,27 @@ class Partner implements Serializable {
      * @return true if the partners are equal
      */
     public boolean equals(Partner partner){
-        return _id.equals(partner.getID());
+        return _id.equals(partner.getId());
     }
 
     // for external representation of instance
     public String toString(){
         String acqValue = "" + Math.round(_acquisitionValue);
-        String points = "" + _points;
+        String points = "" + Math.round(_points);
         String sValue = "" + Math.round(_saleValue);
         String paidSValue = "" + Math.round(_paidSaleValue);
         String status = "" + _status;
         return String.join("|", _id, _name, _address, status, points, acqValue, sValue, paidSValue);
     }
 
-    void addNotification(Notification n){
-        _notifications.add(n);
+    void addNotification(Notification notification){
+        _notifications.add(notification);
     }
 
     void toggleNotification(Product product){
-        for(Notification n : _notifications)
-            if(n.getProductId() == product.getID())
-                n.toggle();
+        for(Notification notification : _notifications)
+            if(notification.getProductId() == product.getId())
+                notification.toggle();
     }
 
     double getPartnerPayments(){

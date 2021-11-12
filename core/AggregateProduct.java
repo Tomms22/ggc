@@ -12,7 +12,7 @@ class AggregateProduct extends Product {
         _recipe = recipe;
     }
 
-    // for external representation of instance ( productID|price|stock )
+    // for external representation of instance ( productID|price|stock|recipe )
     public String toString() {
         return super.toString() +  '|' + _recipe.toString();
     }
