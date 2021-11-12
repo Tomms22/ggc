@@ -17,15 +17,14 @@ class DoShowPartner extends Command<WarehouseManager> {
 
   @Override
   public void execute() throws CommandException {
-    String partnerID;
-
-    partnerID = stringField(Label.SHOW_PARTNER);
+    String partnerID = stringField(Label.SHOW_PARTNER);;
 
     if(_receiver.getPartner(partnerID) == null)
       throw new UnknownPartnerKeyException(partnerID); 
     else 
-      _display.popup(_receiver.getPartner(partnerID).toString());
-
+      _display.popup(_receiver.getPartnerToString(partnerID));
     }
+
+
 
 }

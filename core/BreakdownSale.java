@@ -14,8 +14,8 @@ class BreakdownSale extends Sale{
     
     // For Serialization purposes
     public String toString(){
-        return String.join("| ", super.getID(), super.getPartnerName(),
-         super.getProductName(), "" + super.getQuantity(),
+        return String.join("| ", "" + super.getID(), super.getPartnerName(),
+         super.getProductID(), "" + super.getQuantity(),
           "" + super.getBaseValue(),"" + super.getPaidValue(),
            "" + super.getDeadline()); 
     }

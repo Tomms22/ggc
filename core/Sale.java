@@ -11,7 +11,7 @@ abstract class Sale extends Transaction{
     }
     
     // Gives the appropriate Value for the period of payment of a given date
-    PaymentPeriods getPaymentPeriod(int deadline, int n){
+    PaymentPeriods getPaymentPeriod(int deadline, int N){
         int currentDate = Warehouse.getDate();
         int dateDiff = deadline - currentDate;
 
@@ -42,4 +42,8 @@ abstract class Sale extends Transaction{
         period = getPaymentPeriod(deadline, n);
 
     }   
+
+    int getID(){
+        return super.getID();
+    }
 }

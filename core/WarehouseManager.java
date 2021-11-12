@@ -1,5 +1,6 @@
 package ggc.core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -54,8 +55,8 @@ public class WarehouseManager {
     return _warehouse.getPartnerBatches(partnerID);
   }
 
-  public void addPartner(String id, String name, String address){
-    _warehouse.addPartner(new Partner(id, name, address));
+  public boolean addPartner(String id, String name, String address){
+    return _warehouse.addPartner(id, name, address);
   }
 
   public void addProduct(String id, double price){
@@ -135,5 +136,32 @@ public class WarehouseManager {
     return _warehouse.getAvailableBalance();
   }
 
+  public double getPartnerPayments(String partnerID){
+    return _warehouse.getPartnerPayments(partnerID);
+  }
+
+  public void doToggleNotification(String partnerID, String product){
+    _warehouse.doToggleNotification(partnerID, product);
+  }
+
+  public boolean hasProduct(String productID){
+    return _warehouse.hasProduct(productID);
+  }
+
+  public String getPartnerToString(String partnerID){
+    return _warehouse.getPartnerToString(partnerID);
+  }
+
+  public Collection<Acquisition> getPartnerAcquisitions(String partnerID){
+    return _warehouse.getPartnerAcquisitions(partnerID);    
+  }
+
+  public Collection<Sale> getPartnerSales(String partnerID){
+    return _warehouse.getPartnerSales(partnerID);    
+  }
+
+  public ArrayList<String> getBatchesUnderPriceToString(String productId, double price){
+    return _warehouse.getBatchesUnderPriceToString(productId, price);
+  }
 }
 

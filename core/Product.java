@@ -38,7 +38,7 @@ abstract class Product implements Serializable {
      * 
 	 * @return the product's ID
 	 */
-    String getProductID(){
+    String getID(){
         return _id;
     }
 

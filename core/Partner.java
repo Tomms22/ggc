@@ -1,8 +1,10 @@
 package ggc.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
-public class Partner implements Serializable {
+class Partner implements Serializable {
     private static final long serialVersionUID = 2L;
 	private String _name;
     private String _address;
@@ -12,6 +14,10 @@ public class Partner implements Serializable {
     private double _acquisitionValue;
     private double _saleValue;
     private double _paidSaleValue;
+    private ArrayList<Acquisition> _acquisitions = new ArrayList<>();
+    private ArrayList<Sale> _sales = new ArrayList<>();
+    private ArrayList<Batch> _batches = new ArrayList<>();
+    private ArrayList<Notification> _notifications = new ArrayList<>();
     
 
     Partner(String id, String name, String address){
@@ -25,7 +31,7 @@ public class Partner implements Serializable {
         return _name;
     }
 
-    String getId(){
+    String getID(){
         return _id;
     }
 
@@ -47,5 +53,28 @@ public class Partner implements Serializable {
         String status = "" + _status;
         return String.join("|", _id, _name, _address, status, points, acqValue, sValue, paidSValue);
     }
+
+    void addNotification(Notification n){
+        _notifications.add(n);
+    }
+
+    void toggleNotification(Product product){
+        for(Notification n : _notifications)
+            if(n.getProductId() == product.getID())
+                n.toggle();
+    }
+
+    double getPartnerPayments(){
+        return _paidSaleValue;
+    }
+
+    Collection<Acquisition> getPartnerAcquisitions(){
+        return _acquisitions;
+    } 
+    
+    Collection<Sale> getPartnerSales(){
+        return _sales;
+    }  
+    
 }
 

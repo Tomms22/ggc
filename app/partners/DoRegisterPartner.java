@@ -3,7 +3,7 @@ package ggc.app.partners;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 import ggc.core.WarehouseManager;
-import ggc.core.Partner;
+//import ggc.core.Partner;
 import ggc.app.exception.DuplicatePartnerKeyException;
 import java.lang.NullPointerException;
 /**
@@ -17,30 +17,19 @@ class DoRegisterPartner extends Command<WarehouseManager> {
 		addStringField("address", Message.requestPartnerAddress());
   }
 
+  	/*
+	*	Register Partner, @throws DuplicatePartnerKeyException
+	*/
 	@Override
-	public void execute() throws CommandException {
-		String partnerID;
-	    String partnerName;
-	    String partnerAddress;
-	    
+	public void execute() throws CommandException, DuplicatePartnerKeyException {
+		String id = stringField("ID"), name = stringField("name"), address = stringField("address");	    
 	    try {
-	    	partnerID = stringField("ID");
-	    	partnerName = stringField("name");
-	    	partnerAddress = stringField("address");
-    	
-	    	Partner partner = _receiver.createPartner(partnerID, partnerName, partnerAddress);
-	    	if((_receiver.getPartners()).contains(partner))
-	    		throw new DuplicatePartnerKeyException(partnerID);
-	    	_receiver.addPartner(partner);
+			if(!_receiver.addPartner(id, name, address))
+				throw new DuplicatePartnerKeyException(id);
+			_display.popup(_receiver.getPartnerToString(id));
 
-	    } catch(CommandException e){
-	    	throw e;
 	    } catch(NullPointerException e) {
 	    	_display.popup("null");
-	    } catch(StackOverflowError e) {
-	    	_display.popup("stackoverflow");
-	    } catch(Exception e) {
-	    	_display.popup("error");
 	    }
 	}
 }

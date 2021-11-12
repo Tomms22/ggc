@@ -34,13 +34,16 @@ class Parser {
       case "BATCH_S":
         parseSimpleProduct(components, line);
         break;
+      case "BATCH_M":
+        parseAggregateProduct(components, line);
+        break;
         
       default:
         throw new BadEntryException("Invalid type element: " + components[0]);
     }
   }
 
-  //PARTNER|id|nome|endereco
+  //PARTNER|id|nome|endereço
   private void parsePartner(String[] components, String line) throws BadEntryException {
     if (components.length != 4)
       throw new BadEntryException("Invalid partner with wrong number of fields (3): " + line);
@@ -52,7 +55,7 @@ class Parser {
     _store.addPartner(id, name, address);
   }
 
-  //BATCH_S|idProduto|idParceiro|preco|stock-actual
+  //BATCH_S|idProduto|idParceiro|preço|stock-actual
   private void parseSimpleProduct(String[] components, String line) throws BadEntryException {
     if (components.length != 5)
       throw new BadEntryException("Invalid number of fields (4) in simple batch description: " + line);
@@ -63,43 +66,43 @@ class Parser {
     int stock = Integer.parseInt(components[4]);
     
     if(_store.getProduct(productId) == null)
-      _store.addProduct(productId, price);
+      _store.addProduct(new SimpleProduct(productId));
     
+    Product product = _store.getProduct(productId);
     Partner supplier = _store.getPartner(partnerId);
 
-    _store.addBatch(supplier, price, stock, productId);
+    _store.addBatch(supplier, price, stock, product);
   }
  
-  //BATCH_M|idProduto|idParceiro|prec ̧o|stock-actual|agravamento|componente-1:quantidade-1#...#componente-n:quantidade-n
+  //BATCH_M|idProduto|idParceiro|preço|stock-actual|agravamento|componente-1:quantidade-1#...#componente-n:quantidade-n
   private void parseAggregateProduct(String[] components, String line) throws BadEntryException {
     if (components.length != 7)
       throw new BadEntryException("Invalid number of fields (7) in aggregate batch description: " + line);
     
-    String idProduct = components[1];
-    String idPartner = components[2];
+    String productId = components[1];
+    String partnerId = components[2];
 
-    if (!_store.hasProduct(idProduct)) {
+    if (_store.getProduct(productId) == null) {
       List<Product> products = new ArrayList<>();
       List<Integer> quantities = new ArrayList<>();
       
       for (String component : components[6].split("#")) {
         String[] recipeComponent = component.split(":");
-        // add code here to 
-        // products.add(get Product with id recipeComponent[0]);
+        products.add(_store.getProduct(recipeComponent[0]));
         quantities.add(Integer.parseInt(recipeComponent[1]));
       }
       
-      // add code here to 
-      // register in _store aggregate product with idProduct, aggravation=Double.parseDouble(components[5])
-      // and recipe given by products and quantities);
+      Recipe recipe = new Recipe(products, quantities);
+
+      _store.addProduct(new AggregateProduct(productId, Double.parseDouble(components[5]), recipe));
+
     }
     
-    // add code here to 
-    //Product product = get Product in _store with productId;
-    //Partner partner = get Partner in _store with partnerId;
+    Product product = _store.getProduct(productId);
+    Partner supplier = _store.getPartner(partnerId);
     double price = Double.parseDouble(components[3]);
     int stock = Integer.parseInt(components[4]);
-    // add code here to
-    // add batch with price, stock and partner to product
+
+    _store.addBatch(supplier, price, stock, product);
   }
 }

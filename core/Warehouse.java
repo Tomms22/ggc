@@ -63,7 +63,7 @@ class Warehouse implements Serializable {
   Collection<Batch> getProductBatches(String productId) {
     ArrayList<Batch> productBatches = new ArrayList<>();
     for (Batch batch: _batches)
-      if (productId.equals(batch.getProduct().getId()))
+      if (productId.equals(batch.getProduct().getID()))
         productBatches.add(batch);
     return productBatches;
   }
@@ -71,18 +71,24 @@ class Warehouse implements Serializable {
   Collection<Batch> getPartnerBatches(String partnerId) {
     ArrayList<Batch> partnerBatches = new ArrayList<>();
     for (Batch batch: _batches)
-      if (partnerId.equals(batch.getPartner().getId()))
+      if (partnerId.equals(batch.getPartner().getID()))
         partnerBatches.add(batch);
     return partnerBatches;
   }
 
 
-  void addPartner(Partner partner){
-    _partners.put(partner.getId(), partner);
+  boolean addPartner(String id, String name, String address){
+    Partner p = new Partner(id, name, address);
+
+    if(_partners.get(id) == null){
+      _partners.put(id, p);
+      return true;
+    }
+    return false;
   }
 
   void addProduct(Product product){
-    _products.put(product.getId(), product);
+    _products.put(product.getID(), product);
   }
 
   void addBatch(Batch batch){
@@ -108,12 +114,37 @@ class Warehouse implements Serializable {
 	  _date += timeIncrease;
   }
 
-  
+  void doToggleNotification(String partnerID, String productId){
+    _partners.get(partnerID).toggleNotification(_products.get(productId));
+  }
 
+  double getPartnerPayments(String partnerID){
+    return _partners.get(partnerID).getPartnerPayments();
+  }  
 
+  boolean hasProduct(String productID){
+    return (_products.get(productID) != null);
+  }
 
+  String getPartnerToString(String partnerID){
+    return _partners.get(partnerID).toString();
+  }
 
-  
+  Collection<Acquisition> getPartnerAcquisitions(String partnerID){
+    return _partners.get(partnerID).getPartnerAcquisitions();
+  }
+  Collection<Sale> getPartnerSales(String partnerID){
+    return _partners.get(partnerID).getPartnerSales();
+  }
 
+  ArrayList<String> getBatchesUnderPriceToString(String productId, double price){
+    ArrayList<String> res = new ArrayList<>();
+
+    for(Batch b : _batches)
+      if(b.getProduct().getID() == productId && b.getTotalPrice() < price)
+        res.add(b.toString());
+
+    return res;
+  }
 }
 

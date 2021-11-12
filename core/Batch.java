@@ -108,6 +108,10 @@ public class Batch implements Serializable {
      * @return the batch's information in string form ( productID|supplier|price|stock )
      */
 	public String toString(){
-		return String.join("|", _product.getId(), _supplier.getName(), "" +_pricePerUnit, ""+_stock);
+		return String.join("|", _product.getID(), _supplier.getName(), "" +_pricePerUnit, ""+_stock);
 	}
+
+    double getTotalPrice(){
+        return _stock * _pricePerUnit;
+    }
 }
